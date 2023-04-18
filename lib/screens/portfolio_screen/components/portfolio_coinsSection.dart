@@ -1,10 +1,11 @@
+import 'package:Flutterfolio/custom_widgets/custom_roundButton.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 import '../../../custom_widgets/custom_image.dart';
 import '../../../provider/userCoins_provider.dart';
 import '../../addCoins_screen/addCoins_screen.dart';
-import '../../../model/coin_model.dart';
+import '../../../models/coin_model.dart';
 import '../../../custom_widgets/helper_methods.dart';
 import '../../transactions_screen/transactions_screen.dart';
 import '../widgets/portfolio_coinSkeleton.dart';
@@ -90,18 +91,9 @@ class _PortfolioCoinsSectionState extends State<PortfolioCoinsSection> {
                         style: theme.textTheme.titleMedium,
                       ),
                       const SizedBox(height: 32),
-                      TextButton(
+                      CustomRoundButton(
+                        title: 'Add transaction',
                         onPressed: () => Navigator.of(context).pushNamed(AddCoinsScreen.routeName),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 18),
-                          child: Text(
-                            'Add transaction',
-                            style: theme.textTheme.titleLarge!.copyWith(
-                              color: theme.colorScheme.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
                       ),
                     ],
                   ),

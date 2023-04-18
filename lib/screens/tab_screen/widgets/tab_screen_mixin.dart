@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../provider/allCoins_provider.dart';
 import '../../../provider/userCoins_provider.dart';
-import '../../../model/coin_model.dart';
+import '../../../models/coin_model.dart';
 
 mixin TabScreenMixin<T extends StatefulWidget> on State<T> {
   Future<void> selectDateAndTime({
@@ -95,14 +95,13 @@ Future<void> submit({
   required bool? isPushHomePage,
   required bool isSell,
 }) async {
-  await context.read<UserCoinsProvider>().addUserCoin(
+  await context.read<UserCoinsProvider>().addTransaction(
         CoinModel(
           currentPrice: price,
           name: coin.name,
           symbol: coin.symbol,
           image: coin.image,
           priceDiff: coin.priceDiff,
-          color: coin.color,
           transactions: [
             Transaction(
               buyPrice: price,

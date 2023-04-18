@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../custom_widgets/custom_noInternet.dart';
 import '../../provider/allCoins_provider.dart';
 import '../../provider/userCoins_provider.dart';
 import '../../custom_widgets/custom_alertDialog.dart';
-import '../market_screen/widgets/market_custom_error.dart';
 import 'components/portfolio_appBar.dart';
 import 'components/portfolio_balance.dart';
 import 'components/portfolio_drawer.dart';
@@ -34,24 +34,20 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
   Widget build(BuildContext context) {
     print('Portfolio Build');
     final ThemeData theme = Theme.of(context);
-    final UserCoinsProvider provider = Provider.of<UserCoinsProvider>(context);
 
-    final bool isLoadingUserCoin = provider.isLoadingUserCoin;
-    final bool hasErrorUserCoin = provider.hasErrorUserCoin;
+    final bool isLoading = context.select((UserCoinsProvider provider) => provider.isLoadingUserCoin);
+    final bool hasError = context.select((UserCoinsProvider provider) => provider.hasErrorUserCoin);
 
     return Scaffold(
       key: _scaffoldKey,
       resizeToAvoidBottomInset: true,
       extendBodyBehindAppBar: true,
-      appBar: PortfolioAppBar(hasErrorUserCoin: hasErrorUserCoin),
+      appBar: PortfolioAppBar(),
       body: SafeArea(
-        child: isLoadingUserCoin
+        child: isLoading
             ? const PortfolioShimmer()
-            : hasErrorUserCoin
-                ? const MarketCustomError(
-                    error: 'Please make sure your internet is connected and try again.',
-                    pngPath: 'assets/images/no-wifi.png',
-                  )
+            : hasError
+                ? const CustomNoInternet(error: 'Please make sure your internet is connected and try again.')
                 : Column(
                     children: const [
                       PortfolioBalance(),
@@ -63,7 +59,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                   ),
       ),
       drawer: PortfolioDrawer(scaffoldKey: _scaffoldKey),
-      floatingActionButton: !hasErrorUserCoin
+      floatingActionButton: !hasError
           ? const Text('')
           : FloatingActionButton(
               backgroundColor: theme.colorScheme.primary,
@@ -76,11 +72,8 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                 final AllCoinsProvider allCoinsProvider = context.read<AllCoinsProvider>();
 
                 try {
-                  setState(() {
-                    allCoinsProvider.hasErrorDatabase = false;
-                  });
-                  await userCoinsProvider.setUserCoin();
-                  await allCoinsProvider.setDatabaseCoins();
+                  await Future.sync(() => userCoinsProvider.listenUserCoins());
+                  await allCoinsProvider.setDatabaseData();
                 } catch (e) {
                   await showDialog(
                     context: context,
