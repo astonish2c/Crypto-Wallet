@@ -130,7 +130,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
                       try {
                         await signIn(context, email: _emailController.text, password: _passwordController.text);
-
                         final box = Hive.box('configs');
                         box.put('isFirstRun', false);
                       } on FirebaseAuthException catch (e) {

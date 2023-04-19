@@ -91,15 +91,11 @@ class _BuyTabState extends State<BuyTab> with TabScreenMixin {
               onPressed: checkUserInput(value.text) || _isLoadingAdd
                   ? null
                   : () async {
-                      setState(() {
-                        _isLoadingAdd = true;
-                      });
+                      setState(() => _isLoadingAdd = true);
 
                       if (double.parse(_amountController.text) * _price < 10.0) {
                         showAddLimit(context);
-                        setState(() {
-                          _isLoadingAdd = false;
-                        });
+                        setState(() => _isLoadingAdd = false);
                         return;
                       }
 

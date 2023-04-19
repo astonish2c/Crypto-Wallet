@@ -1,6 +1,8 @@
+import 'package:Flutterfolio/main.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../Auth/widgets/utils.dart';
 import '../../../provider/allCoins_provider.dart';
 import '../../../provider/userCoins_provider.dart';
 import '../../../models/coin_model.dart';
@@ -156,24 +158,5 @@ Future<void> addOrUpdate({
 }
 
 void showAddLimit(BuildContext context) {
-  ScaffoldMessenger.of(context).removeCurrentSnackBar();
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      duration: const Duration(seconds: 2),
-      content: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(color: Colors.red[700], borderRadius: BorderRadius.circular(12)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text('Sorry!', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            SizedBox(height: 16),
-            Text('Transactions with less than 10\$ can not be added.', style: TextStyle(fontSize: 14)),
-          ],
-        ),
-      ),
-    ),
-  );
+  Utils.showSnackBar('Transactions with less than 10\$ can not be added');
 }
