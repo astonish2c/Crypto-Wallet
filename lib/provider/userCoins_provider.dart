@@ -105,7 +105,7 @@ class UserCoinsProvider with ChangeNotifier {
   }
 
   Future<void> addAsSingleTransaction(CoinModel coin) async {
-    DatabaseReference transactionsRef = FirebaseDatabase.instance.ref('$userCoins/${user?.uid}/${coin.symbol}/transactions');
+    DatabaseReference transactionsRef = FirebaseDatabase.instance.ref('userCoins/${user?.uid}/${coin.symbol}/transactions');
 
     final String transactionId = transactionsRef.push().key as String;
 
